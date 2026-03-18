@@ -243,7 +243,7 @@ input[type=date]::-webkit-calendar-picker-indicator{
 
 <script>
 // ── KONFIGURACJA ── wklej URL swojego Apps Script po wdrożeniu
-var SCRIPT_URL = 'https://script.google.com/a/macros/deltaprime.pl/s/AKfycbyXSbTRwt6lwQOt70zQk7tpo7GqbkZzF-di8mogpW0_cu3aSSD1x8SMDTuoI6JqJY8Tjg/exec';
+var SCRIPT_URL = 'https://script.google.com/a/macros/deltaprime.pl/s/AKfycbzmGbKku3gwS2jUm_SLRscUaHeWYGtiul5YrLDhKAvv7NxIRk0ZVSMRkBXXie5pI5cYTA/exec';
 
 var POJAZDY = ['SG 315EU','SG 378EA','SK 160YH','SK 382YK'];
 
@@ -320,23 +320,18 @@ function wyslij(){
 
   fetch(SCRIPT_URL, {
     method:'POST',
+    mode:'no-cors',
+    headers:{'Content-Type':'text/plain'},
     body: JSON.stringify(dane)
   })
-  .then(function(r){return r.json();})
-  .then(function(w){
+  .then(function(){
     document.getElementById('spinner').style.display='none';
-    if(w.sukces){
-      document.getElementById('msg-sukces').style.display='block';
-      document.querySelectorAll('.pojazd-btn').forEach(function(b){b.classList.remove('wybrany');});
-      wybranyPojazd=null;
-      document.getElementById('licznik').value='';
-      zmienZdjecie();
-      document.getElementById('btn-wyslij').disabled=false;
-    } else {
-      document.getElementById('blad-szczegoly').textContent=w.blad||'Nieznany błąd';
-      document.getElementById('msg-blad').style.display='block';
-      document.getElementById('btn-wyslij').disabled=false;
-    }
+    document.getElementById('msg-sukces').style.display='block';
+    document.querySelectorAll('.pojazd-btn').forEach(function(b){b.classList.remove('wybrany');});
+    wybranyPojazd=null;
+    document.getElementById('licznik').value='';
+    zmienZdjecie();
+    document.getElementById('btn-wyslij').disabled=false;
   })
   .catch(function(err){
     document.getElementById('spinner').style.display='none';
